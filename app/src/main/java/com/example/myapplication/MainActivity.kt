@@ -31,6 +31,9 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.ui.theme.MyApplicationTheme
 import java.time.format.TextStyle
 
@@ -39,126 +42,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApplicationTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    Screen()
+                //val windowClass = calculateWindowSizeClass(activity = this)
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = "profil") {
+                    composable("profil") {
+                        //Profil(navController = navController)
+                    }
+                }
                       }
                  }
         }
-    }
-}
-
-@Composable
-fun Screen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        MonImage()
-        Spacer(modifier = Modifier.height(16.dp))
-        Texte()
-        Spacer(modifier = Modifier.height(100.dp))
-        TextWithIcon()
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Button(
-            onClick = {},
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
-        ) {
-            Text(text = "Démarrer")
-        }
-    }
-}
-
-@Composable
-fun MonImage() {
-    Column {
-        Image(
-            painterResource(R.drawable.loris),
-            contentDescription = "Mon profil",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(200.dp)
-                .clip(CircleShape)
-        )
-    }
-}
-
-@Composable
-fun Texte() {
-    Column (
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Brignatz Loris",
-            style = androidx.compose.ui.text.TextStyle(
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
-        )
-        Text(
-            text = "Étudiant en 4ème année",
-            style = androidx.compose.ui.text.TextStyle(
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color.Black
-            )
-        )
-        Text(
-            text = "École d'ingénieur ISIS",
-            style = androidx.compose.ui.text.TextStyle(
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color.Black,
-                fontStyle = FontStyle.Italic
-            )
-        )
-    }
-}
-
-@Composable
-fun TextWithIcon() {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.email),
-            contentDescription = "Icon",
-            modifier = Modifier.size(18.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = "lorisbrignatz@gmail.com",
-            style = androidx.compose.ui.text.TextStyle(
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color.Black
-            )
-        )
-    }
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.linkedin),
-            contentDescription = "Icon",
-            modifier = Modifier.size(18.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = "www.linkedin.com/in/loris-brignatz",
-            style = androidx.compose.ui.text.TextStyle(
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Normal,
-                color = Color.Black
-            )
-        )
-    }
 }
