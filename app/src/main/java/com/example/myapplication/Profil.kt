@@ -47,7 +47,7 @@ fun Profil(navController: NavController){
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = {},
+            onClick = {navController.navigate("films")},
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()

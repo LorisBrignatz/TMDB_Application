@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "profil") {
                     composable("profil") {
-                        //Profil(navController = navController)
+                        Profil(navController = navController)
                     }
                 }
                       }
