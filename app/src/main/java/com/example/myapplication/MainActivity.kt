@@ -55,14 +55,17 @@ class MainActivity : ComponentActivity() {
                     composable("profil") {
                         Profil(navController = navController)
                     }
+                    composable("films") {
+                        FilmsList(movieViewModel = viewmodel, navController = navController)
+                    }
                 }
-                Greeting("Android", viewmodel)
+                /*Greeting("Android", viewmodel)*/
                       }
                  }
         }
 }
 
-@Composable
+/*@Composable
 fun Greeting(name: String, viewModel: MainViewModel){
     val movies by viewModel.movies.collectAsState()
 
@@ -83,4 +86,4 @@ fun DefaultPreview() {
     MyApplicationTheme {
         Greeting("Android", MainViewModel())
     }
-}
+}*/

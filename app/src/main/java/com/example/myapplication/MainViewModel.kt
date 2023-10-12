@@ -23,32 +23,9 @@ class MainViewModel : ViewModel() {
         .build()
         .create(TmdbAPI::class.java)
 
-    fun MoviesOfTheWeek(language: String){
+    fun MoviesOfTheWeek(language: String) {
         viewModelScope.launch {
             movies.value = service.getMoviesOfTheWeek(apikey, language).results
         }
     }
-
-    /*private val _movies = MutableStateFlow<MainState>(MainState.Loading)
-    val movies: StateFlow<MainState> = _movies
-
-    init {
-        getFilmsInitiaux()
-    }
-
-    fun getFilmsInitiaux() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val movieList = TmdbAPI.retrofitService.movieList(
-                    apiKey = "b03d713739bb95e277d400986506278a",
-                    language = "fr-FR"
-                )
-                _movies.value = MainState.Success(movieList)
-            } catch (e: HttpException) {
-                _movies.value = MainState.Error(e.localizedMessage ?: "Une erreur est survenue")
-            } catch (e: IOException) {
-                _movies.value = MainState.Error("Une erreur est survenue")
-            }
-        }
-    }*/
 }

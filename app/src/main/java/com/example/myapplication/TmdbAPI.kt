@@ -10,5 +10,10 @@ interface TmdbAPI {
     suspend fun getMoviesOfTheWeek(
         @Query("api_key") apiKey: String,
         @Query("language") language: String): TmdbResult
+
+    /*@GET("trending/movie")
+    suspend fun getFilmsInitiaux(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String): TmdbResult*/
 }
 
