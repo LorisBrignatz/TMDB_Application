@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
 @Composable
-fun Profil(navController: NavController){
+fun Profil(navController: NavController, windowClass: WindowSizeClass) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,7 +48,7 @@ fun Profil(navController: NavController){
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = {navController.navigate("films")},
+            onClick = {navController.navigate("FilmsScreen")},
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()
