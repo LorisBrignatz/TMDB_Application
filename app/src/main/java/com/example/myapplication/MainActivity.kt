@@ -44,6 +44,12 @@ fun Screen(windowclass : WindowSizeClass){
         composable("FilmsScreen") {
             FilmsScreen(navController, windowclass)
         }
+        composable("SeriesScreen") {
+            SeriesScreen(navController, windowclass)
+        }
+        composable("ActeursScreen") {
+            ActeursScreen(navController, windowclass)
+        }
     }
 }
 /*@Composable

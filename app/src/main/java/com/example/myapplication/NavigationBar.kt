@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.SemanticsProperties.ImeAction
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -75,10 +76,10 @@ fun BottomNavBar(
     windowClass: WindowSizeClass,
     filmsBoolean: Boolean = false,
     seriesBoolean: Boolean = false,
-    personBoolean: Boolean = false
+    acteursBoolean: Boolean = false
 ) {
     val iconSize = 35.dp
-    val iconTint = if (filmsBoolean || seriesBoolean || personBoolean) Color.White else Color.Black
+    val iconTint = if (filmsBoolean || seriesBoolean || acteursBoolean) Color.White else Color.Black
 
     BottomAppBar(
         containerColor = Color.Blue,
@@ -87,37 +88,45 @@ fun BottomNavBar(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                @Composable
-                fun NavAction(route: String, iconResId: Int, text: String) {
-                    IconButton(
-                        onClick = { navController.navigate("FilmsScreen") },
-                        modifier = Modifier.size(80.dp)
-                    ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                painter = painterResource(id = iconResId),
-                                contentDescription = text,
-                                tint = iconTint,
-                                modifier = Modifier.size(iconSize)
-                            )
-                            Text(
-                                text = text,
-                                fontSize = 15.sp,
-                                color = iconTint
-                            )
-                        }
-                    }
-                }
-
-               NavAction("FilmsScreen", R.drawable.video, "Films")
+                NavAction("FilmsScreen", R.drawable.video, "Films", navController, iconSize, iconTint)
+                NavAction("SeriesScreen", R.drawable.video, "Séries", navController, iconSize, iconTint)
+                NavAction("ActeursScreen", R.drawable.video, "Acteurs", navController, iconSize, iconTint)
             }
         },
     )
 }
 
+@Composable
+fun NavAction(
+    route: String,
+    iconResId: Int,
+    text: String,
+    navController: NavController,
+    iconSize: Dp,
+    iconTint: Color
+) {
+    IconButton(
+        onClick = { navController.navigate(route) },
+        modifier = Modifier.size(80.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = painterResource(id = iconResId),
+                contentDescription = text,
+                tint = iconTint,
+                modifier = Modifier.size(iconSize)
+            )
+            Text(
+                text = text,
+                fontSize = 15.sp,
+                color = iconTint
+            )
+        }
+    }
+}
 
 
 

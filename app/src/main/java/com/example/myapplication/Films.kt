@@ -84,7 +84,7 @@ class Films : ComponentActivity() {
     }
 
     @Composable
-    fun MovieItem(movie: Movie, navController: NavController) {
+    fun MovieItem(movie: TmdbMovie, navController: NavController) {
         val imageUrl = "https://image.tmdb.org/t/p/w780${movie.poster_path}"
 
         FloatingActionButton(
