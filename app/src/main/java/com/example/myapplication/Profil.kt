@@ -1,7 +1,11 @@
 package com.example.myapplication
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,7 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -20,40 +26,73 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.compose.ui.text.font.Font
+
 
 @Composable
 fun Profil(navController: NavController, windowClass: WindowSizeClass) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier.fillMaxSize(),
     ) {
-        MonImage()
-        Spacer(modifier = Modifier.height(16.dp))
-        Texte()
-        Spacer(modifier = Modifier.height(100.dp))
-        TextWithIcon()
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Button(
-            onClick = {navController.navigate("FilmsScreen")},
+        Image(
+            painterResource(id = R.drawable.fondecran),
+            contentDescription = "Background Image",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+        Column(
             modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = "Démarrer")
+            MonImage()
+            Spacer(modifier = Modifier.height(1.dp))
+            Image(
+                painter = painterResource(id = R.drawable.presentationnetflix),
+                contentDescription = "Nom Netflix",
+                modifier = Modifier
+                    .size(300.dp)
+                    .padding(0.dp, -16.dp)
+            )
+            Spacer(modifier = Modifier.height(50.dp))
+            Texte()
+            Spacer(modifier = Modifier.height(50.dp))
+            TextWithIcon()
+            Spacer(modifier = Modifier.weight(1f))
+
+            Button(
+                onClick = { navController.navigate("FilmsScreen") },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth()
+                    .background(Color.Black, RoundedCornerShape(10.dp)),
+                content = {
+                    Text(
+                        text = "Démarrer",
+                        style = TextStyle(
+                            fontFamily = FontFamily.Monospace,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                    )
+                }
+            )
+
         }
     }
 }
@@ -61,12 +100,18 @@ fun Profil(navController: NavController, windowClass: WindowSizeClass) {
 @Composable
 fun MonImage() {
     Column {
+        val borderWidth = 5.dp
         Image(
-            painterResource(R.drawable.loris),
+            painter = painterResource(id = R.drawable.loris),
             contentDescription = "Mon profil",
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(200.dp)
+                .border(
+                    BorderStroke(borderWidth, Color.Black),
+                    CircleShape
+                )
+                .padding(borderWidth)
                 .clip(CircleShape)
         )
     }
@@ -77,14 +122,15 @@ fun Texte() {
     Column (
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
+        /*Text(
             text = "Brignatz Loris",
             style = TextStyle(
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Bold,
+                fontSize = 50.sp,
+                fontFamily = FontFamily.Cursive,
+                fontWeight = FontWeight.ExtraBold,
                 color = Color.Black
             )
-        )
+        )*/
         Text(
             text = "Étudiant en 4ème année",
             style = TextStyle(

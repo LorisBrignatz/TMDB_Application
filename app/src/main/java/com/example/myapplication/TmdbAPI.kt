@@ -20,6 +20,12 @@ interface TmdbAPI {
     suspend fun getActorsOfTheWeek(
         @Query("api_key") api_key: String): TmdbActorsResult
 
+    @GET("movie/{movie_id}?append_to_response=credits")
+    suspend fun getMoviesInformations(
+        @Path("movie_id") movieID: String,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String) : TmdbMoviesInfosResult
+
     @GET("search/movie")
     suspend fun getSearchMovies(
         @Query("api_key") apiKey: String,
