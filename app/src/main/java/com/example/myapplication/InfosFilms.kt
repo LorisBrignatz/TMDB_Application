@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
+import android.icu.text.CaseMap.Title
 import android.media.Image
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -8,14 +9,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -39,6 +43,107 @@ import java.util.Locale
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalCoilApi::class)
 @Composable
+fun InfosFilms(navController: NavController, movieID: String) {
+    val infosMovies: MainViewModel = viewModel()
+    val moviesInfos by infosMovies.moviesInfos.collectAsState()
+
+    if (moviesInfos.title == "") {
+        infosMovies.MoviesInformations("fr-FR")
+    }
+    if (moviesInfos.title != "") {
+        LazyColumn() {
+            // Titre + Image de fond du film
+            item {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = moviesInfos.title,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 30.sp,
+                        modifier = Modifier.padding(top = 10.dp, bottom = 10.dp)
+                    )
+                    Image(
+                        painter = rememberImagePainter(
+                            data = "https://image.tmdb.org/t/p/w1280" + moviesInfos.backdrop_path,
+                            builder = {
+                                crossfade(true)
+                                size(600, 600)
+                            }),
+                        contentDescription = "Image film ${moviesInfos.title}",
+                        Modifier
+                            .padding(start = 15.dp, end = 15.dp)
+                            .fillMaxWidth()
+                    )
+                }
+            }
+            // Affiche + Date de sortie + Genre
+            item {
+                Row(
+                    verticalAlignment = Alignment.Top,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Image(
+                        painter = rememberImagePainter(
+                            data = "https://image.tmdb.org/t/p/w1280" + moviesInfos.poster_path,
+                            builder = {
+                                crossfade(true)
+                                size(400, 400)
+                            }),
+                        contentDescription = "Image film ${moviesInfos.title}",
+                        Modifier.padding(start = 25.dp, end = 10.dp, top = 5.dp)
+                    )
+                    Column(
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(start = 20.dp, end = 15.dp)
+                    ) {
+                        Text(
+                            text = formatDate(
+                                moviesInfos.release_date,
+                                "yyyy-dd-MM",
+                                "dd MMM yyyy",
+                                Locale.FRANCE
+                            ),
+                            color = Color.Gray,
+                            modifier = Modifier.padding(top = 15.dp),
+                            fontSize = 15.sp
+                        )
+
+                        Text(
+                            text = getGenres(moviesInfos.genres),
+                            fontStyle = FontStyle.Italic,
+                            modifier = Modifier.padding(top = 15.dp, end = 15.dp)
+                        )
+                    }
+                }
+            }
+            // Synopsis
+            item {
+                Column(
+                    horizontalAlignment = Alignment.Start,
+                    modifier = Modifier.padding(start = 10.dp)
+                ) {
+                    Text(
+                        text = "Synopsis",
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp,
+                        modifier = Modifier.padding(top = 15.dp, end = 15.dp)
+                    )
+                    Text(
+                        text = moviesInfos.overview,
+                        modifier = Modifier.padding(top = 15.dp, end = 15.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+/*@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalCoilApi::class)
+@Composable
 fun InfosFilms(navController: NavController, movieId: String) {
     val infosMovies: MainViewModel = viewModel()
     val movies by infosMovies.moviesInfos.collectAsState()
@@ -52,41 +157,54 @@ fun InfosFilms(navController: NavController, movieId: String) {
             modifier = Modifier.padding(16.dp),
             contentPadding = PaddingValues(8.dp)
         ) {
-            item {
-                MovieHeader(movie = MoviesInfos())
-            }
+            items(movies) { movie ->
+                MovieInfosItem(movie = movie, navController = navController)
 
-            item {
+                /* item {
                 MoviePosterAndInfo(movie = MoviesInfos())
             }
 
             item {
                 MovieSynopsis(movie = MoviesInfos())
+            }*/
             }
         }
     }
 }
 
 @Composable
-fun MovieHeader(movie: MoviesInfos) {
+fun MovieInfosItem(movie: MoviesInfos, navController: NavController) {
+    val imageFilmUrl = "https://image.tmdb.org/t/p/w1280${movie.backdrop_path}"
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        MovieHeader(title = movie.title, imageFilmUrl = imageFilmUrl)
+        /*MovieDetails(title = movie.title, releaseDate = movie.release_date)*/
+    }
+}
+
+
+@Composable
+fun MovieHeader(title: String, imageFilmUrl : String) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = movie.title,
+            text = title,
             fontWeight = FontWeight.Bold,
             fontSize = 28.sp,
             modifier = Modifier.padding(vertical = 16.dp)
         )
         Image(
             painter = rememberImagePainter(
-                data = "https://image.tmdb.org/t/p/w1280${movie.backdrop_path}",
+                data = imageFilmUrl,
                 builder = {
                     crossfade(true)
                 }
             ),
-            contentDescription = "Titre film ${movie.title}",
+            contentDescription = "Titre film",
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
@@ -95,7 +213,7 @@ fun MovieHeader(movie: MoviesInfos) {
     }
 }
 
-@Composable
+/*@Composable
 fun MoviePosterAndInfo(movie: MoviesInfos) {
     Row(
         verticalAlignment = Alignment.Top,
@@ -158,9 +276,8 @@ fun MovieSynopsis(movie: MoviesInfos) {
             fontSize = 16.sp,
             modifier = Modifier.padding(top = 8.dp)
         )
-    }
-}
-
+    }*/
+}*/
 fun getGenres(genres: List<Genre>): String {
     return genres.joinToString(", ") { it.name }
 }

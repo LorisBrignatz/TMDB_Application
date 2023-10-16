@@ -10,7 +10,7 @@ data class TmdbMovie(
     val adult: Boolean = false,
     val backdrop_path: String = "",
     val genre_ids: List<Int> = listOf(),
-    val id: Int = 0,
+    val id: String = "",
     val original_language: String = "",
     val original_title: String = "",
     val overview: String = "",
@@ -35,7 +35,7 @@ data class TmdbSerie(
     val backdrop_path: String = "",
     val first_air_date: String = "",
     val genre_ids: List<Int> = listOf(),
-    val id: Int = 0,
+    val id: String = "",
     val media_type: String = "",
     val name: String = "",
     val origin_country: List<String> = listOf(),
@@ -58,8 +58,8 @@ data class TmdbActorsResult(
 data class TmdbActor(
     val adult: Boolean = false,
     val gender: Int = 0,
-    val id: Int = 0,
-    /*val known_for: List<KnownForPersonList> = listOf(),*/
+    val id: String = "",
+    val known_for: List<KnownForActorResult> = listOf(),
     val known_for_department: String = "",
     val media_type: String = "",
     val name: String = "",
@@ -68,18 +68,36 @@ data class TmdbActor(
     val profile_path: String = ""
 )
 
-data class TmdbMoviesInfosResult(
+data class KnownForActorResult(
+    val adult: Boolean = false,
+    val backdrop_path: String = "",
+    val genre_ids: List<Int> = listOf(),
+    val id: String = "",
+    val media_type: String = "",
+    val original_language: String = "",
+    val original_title: String = "",
+    val overview: String = "",
+    val popularity: Double = 0.0,
+    val poster_path: String = "",
+    val release_date: String = "",
+    val title: String = "",
+    val video: Boolean = false,
+    val vote_average: Double = 0.0,
+    val vote_count: Int = 0
+)
+
+/*data class TmdbMoviesInfosResult(
     val page: Int = 0,
     val results: List<MoviesInfos> = listOf(),
     val total_pages: Int = 0,
     val total_results: Int = 0
-)
+)*/
 
 data class MoviesInfos(
     val adult: Boolean = false,
     val backdrop_path: String = "",
     val genre_ids: List<Int> = listOf(),
-    val id: Int = 0,
+    val id: String = "",
     val original_language: String = "",
     val original_title: String = "",
     val overview: String = "",
@@ -94,6 +112,6 @@ data class MoviesInfos(
 )
 
 data class Genre(
-    val id: Int,
+    val id: String,
     val name: String
 )

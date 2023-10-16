@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -61,20 +62,22 @@ fun Profil(navController: NavController, windowClass: WindowSizeClass) {
         ) {
             MonImage()
             Spacer(modifier = Modifier.height(1.dp))
-            Image(
+            /*Image(
                 painter = painterResource(id = R.drawable.presentationnetflix),
                 contentDescription = "Nom Netflix",
                 modifier = Modifier
                     .size(300.dp)
-                    .padding(0.dp, -16.dp)
-            )
-            Spacer(modifier = Modifier.height(50.dp))
+            )*/
             Texte()
             Spacer(modifier = Modifier.height(50.dp))
             TextWithIcon()
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
+                colors = buttonColors(
+                    containerColor =  Color.Black,
+                    contentColor = Color.White
+                ),
                 onClick = { navController.navigate("FilmsScreen") },
                 modifier = Modifier
                     .padding(16.dp)
@@ -87,9 +90,10 @@ fun Profil(navController: NavController, windowClass: WindowSizeClass) {
                             fontFamily = FontFamily.Monospace,
                             fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = Color.White,
+                            background = Color.Black
                         )
-                    )
+                                            )
                 }
             )
 
@@ -119,18 +123,19 @@ fun MonImage() {
 
 @Composable
 fun Texte() {
+    val customFont = Font(R.font.bebasneue)
     Column (
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        /*Text(
+        Text(
             text = "Brignatz Loris",
             style = TextStyle(
                 fontSize = 50.sp,
-                fontFamily = FontFamily.Cursive,
+                fontFamily = FontFamily(customFont),
                 fontWeight = FontWeight.ExtraBold,
                 color = Color.Black
             )
-        )*/
+        )
         Text(
             text = "Étudiant en 4ème année",
             style = TextStyle(

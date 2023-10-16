@@ -24,7 +24,7 @@ interface TmdbAPI {
     suspend fun getMoviesInformations(
         @Path("movie_id") movieID: String,
         @Query("api_key") apiKey: String,
-        @Query("language") language: String) : TmdbMoviesInfosResult
+        @Query("language") language: String) : MoviesInfos
 
     @GET("search/movie")
     suspend fun getSearchMovies(

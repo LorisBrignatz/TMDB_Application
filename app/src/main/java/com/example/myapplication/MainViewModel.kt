@@ -1,6 +1,8 @@
 package com.example.myapplication
 
+import android.view.AbsSavedState
 import android.view.textclassifier.TextLanguage
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -12,11 +14,12 @@ import java.io.IOException
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class MainViewModel : ViewModel() {
+class MainViewModel( savedStateHandle: SavedStateHandle) : ViewModel() {
     val movies = MutableStateFlow<List<TmdbMovie>>(listOf())
     val series = MutableStateFlow<List<TmdbSerie>>(listOf())
     val acteurs = MutableStateFlow<List<TmdbActor>>(listOf())
-    val moviesInfos = MutableStateFlow<List<MoviesInfos>>(listOf())
+    val moviesInfos = MutableStateFlow<MoviesInfos>(MoviesInfos())
+    private val movieID: String? = savedStateHandle["movieID"]
 
     val apikey = "b03d713739bb95e277d400986506278a"
 
@@ -46,9 +49,9 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun MoviesInformations(movieId: String, language: String) {
+    fun MoviesInformations(language: String) {
         viewModelScope.launch {
-            moviesInfos.value = service.getMoviesInformations(movieId, apikey, language).results
+            moviesInfos.value = service.getMoviesInformations(movieID?:"", apikey, language)
         }
     }
 

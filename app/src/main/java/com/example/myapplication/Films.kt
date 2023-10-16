@@ -88,7 +88,7 @@ class Films : ComponentActivity() {
         val imageUrl = "https://image.tmdb.org/t/p/w780${movie.poster_path}"
 
         FloatingActionButton(
-            onClick = { navController.navigate("DetailMovie/${movie.id}") },
+            onClick = { navController.navigate("InfosFilms/${movie.id}") },
             modifier = Modifier.padding(20.dp),
             containerColor = Color.White,
         ) {
