@@ -19,7 +19,11 @@ class MainViewModel( savedStateHandle: SavedStateHandle) : ViewModel() {
     val series = MutableStateFlow<List<TmdbSerie>>(listOf())
     val acteurs = MutableStateFlow<List<TmdbActor>>(listOf())
     val moviesInfos = MutableStateFlow<MoviesInfos>(MoviesInfos())
+    val seriesInfos = MutableStateFlow<SeriesInfos>(SeriesInfos())
+    val acteursInfos = MutableStateFlow<ActeursInfos>(ActeursInfos())
     private val movieID: String? = savedStateHandle["movieID"]
+    private val serieID: String? = savedStateHandle["serieID"]
+    private val acteurID: String? = savedStateHandle["acteurID"]
 
     val apikey = "b03d713739bb95e277d400986506278a"
 
@@ -55,6 +59,17 @@ class MainViewModel( savedStateHandle: SavedStateHandle) : ViewModel() {
         }
     }
 
+    fun SeriesInformations(language: String) {
+        viewModelScope.launch {
+            seriesInfos.value = service.getSeriesInformations(serieID?:"", apikey, language)
+        }
+    }
+
+    fun ActeursInformations(language: String) {
+        viewModelScope.launch {
+            acteursInfos.value = service.getActeursInformations(acteurID?:"", apikey, language)
+        }
+    }
         fun SearchMovies(language: String, query: String) {
             viewModelScope.launch {
                 movies.value = service.getSearchMovies(apikey, language, query).results

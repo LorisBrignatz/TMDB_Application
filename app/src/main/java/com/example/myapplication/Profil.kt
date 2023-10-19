@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.Font
 
 @Composable
 fun Profil(navController: NavController, windowClass: WindowSizeClass) {
+    val customFont = Font(R.font.bebasneue)
     Box(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -61,7 +62,7 @@ fun Profil(navController: NavController, windowClass: WindowSizeClass) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             MonImage()
-            Spacer(modifier = Modifier.height(1.dp))
+            Spacer(modifier = Modifier.height(60.dp))
             /*Image(
                 painter = painterResource(id = R.drawable.presentationnetflix),
                 contentDescription = "Nom Netflix",
@@ -69,7 +70,7 @@ fun Profil(navController: NavController, windowClass: WindowSizeClass) {
                     .size(300.dp)
             )*/
             Texte()
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(30.dp))
             TextWithIcon()
             Spacer(modifier = Modifier.weight(1f))
 
@@ -82,13 +83,13 @@ fun Profil(navController: NavController, windowClass: WindowSizeClass) {
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth()
-                    .background(Color.Black, RoundedCornerShape(10.dp)),
+                    .background(Color.Black, RoundedCornerShape(40.dp)),
                 content = {
                     Text(
                         text = "Démarrer",
                         style = TextStyle(
-                            fontFamily = FontFamily.Monospace,
-                            fontSize = 20.sp,
+                            fontFamily = FontFamily(customFont),
+                            fontSize = 25.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
                             background = Color.Black

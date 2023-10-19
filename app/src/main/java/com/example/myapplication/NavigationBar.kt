@@ -38,6 +38,10 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.SemanticsProperties.ImeAction
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,14 +50,25 @@ import androidx.navigation.NavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavBar(navController: NavController, windowClass: WindowSizeClass) {
+    val customFont = Font(R.font.bebasneue)
     Column {
         TopAppBar(
             colors = TopAppBarDefaults.mediumTopAppBarColors(
-                containerColor = Color.Blue,
-                titleContentColor = Color.White
+                containerColor = Color.Red,
+                titleContentColor = Color.Black
             ),
             title = {
-                Text("TurboApp")
+                Text(
+                    text = "TMDB",
+                    modifier = Modifier.fillMaxWidth().padding(8.dp),
+                    style = TextStyle(
+                        fontFamily = FontFamily(customFont),
+                        fontSize = 40.sp,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    )
+                )
             },
             navigationIcon = {
                 IconButton(onClick = { navController.navigate("Profil") }) {
@@ -82,15 +97,15 @@ fun BottomNavBar(
     val iconTint = if (filmsBoolean || seriesBoolean || acteursBoolean) Color.White else Color.Black
 
     BottomAppBar(
-        containerColor = Color.Blue,
+        containerColor = Color.Red,
         actions = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 NavAction("FilmsScreen", R.drawable.video, "Films", navController, iconSize, iconTint)
-                NavAction("SeriesScreen", R.drawable.video, "Séries", navController, iconSize, iconTint)
-                NavAction("ActeursScreen", R.drawable.video, "Acteurs", navController, iconSize, iconTint)
+                NavAction("SeriesScreen", R.drawable.television, "Séries", navController, iconSize, iconTint)
+                NavAction("ActeursScreen", R.drawable.acteur, "Acteurs", navController, iconSize, iconTint)
             }
         },
     )
@@ -116,13 +131,13 @@ fun NavAction(
             Icon(
                 painter = painterResource(id = iconResId),
                 contentDescription = text,
-                tint = iconTint,
+                tint = Color.Black,
                 modifier = Modifier.size(iconSize)
             )
             Text(
                 text = text,
                 fontSize = 15.sp,
-                color = iconTint
+                color = Color.Black
             )
         }
     }

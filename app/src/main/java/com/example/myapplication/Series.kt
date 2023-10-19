@@ -6,10 +6,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -27,24 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
-
-class Series : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            val viewmodel: MainViewModel by viewModels()
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.background,
-            ) {
-            }
-        }
-    }
-}
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,8 +48,13 @@ fun SeriesScreen(navController: NavController, windowClass: WindowSizeClass) {
         topBar = { TopNavBar(navController, windowClass) },
         bottomBar = { BottomNavBar(navController, windowClass, seriesBoolean = true) }
     ) {
-        val modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)
-        SeriesList(mainViewModel, navController, modifier = modifier)
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = Color.Black,
+            ) {
+                val modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)
+                SeriesList(mainViewModel, navController, modifier = modifier)
+            }
     }
 }
 @Composable
@@ -81,51 +78,54 @@ fun SerieItem(serie: TmdbSerie, navController: NavController) {
     val imageUrl = "https://image.tmdb.org/t/p/w780${serie.poster_path}"
 
     FloatingActionButton(
-        onClick = { navController.navigate("DetailSerie/${serie.id}") },
-        modifier = Modifier.padding(20.dp),
-        containerColor = Color.White,
+        onClick = { navController.navigate("InfosSeries/${serie.id}") },
+        modifier = Modifier
+            .padding(10.dp)
+            .size(350.dp)
     ) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(0xFF121212))
         ) {
-            SerieImage(imageUrl = imageUrl)
-            SerieDetails(title = serie.original_name, releaseDate = serie.first_air_date)
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Image(
+                    painter = rememberImagePainter(
+                        data = imageUrl,
+                        builder = {
+                            crossfade(true)
+                            size(500, 600)
+                        }
+                    ),
+                    contentDescription = "Image série"
+                )
+                SerieDetails(title = serie.original_name, releaseDate = serie.first_air_date)
+            }
         }
     }
 }
 
 @Composable
-fun SerieImage(imageUrl: String) {
-    Image(
-        painter = rememberImagePainter(
-            data = imageUrl,
-            builder = {
-                crossfade(true)
-                size(350, 400)
-            }
-        ),
-        contentDescription = "Image série",
-        modifier = Modifier.padding(start = 5.dp, end = 5.dp)
-    )
-}
-
-@Composable
 fun SerieDetails(title: String, releaseDate: String) {
     Column(
-        horizontalAlignment = Alignment.Start,
-        modifier = Modifier.padding(start = 10.dp)
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             text = title,
+            textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
-            color = Color.Black,
+            fontSize = 15.sp,
+            color = Color.White,
             modifier = Modifier.padding(top = 5.dp)
         )
         Text(
             text = releaseDate,
-            color = Color.Black,
-            modifier = Modifier.padding(top = 15.dp)
+            color = Color.White,
+            modifier = Modifier.padding(top = 5.dp)
         )
     }
 }

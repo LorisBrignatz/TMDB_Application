@@ -26,6 +26,18 @@ interface TmdbAPI {
         @Query("api_key") apiKey: String,
         @Query("language") language: String) : MoviesInfos
 
+    @GET("tv/{tv_id}?append_to_response=credits")
+    suspend fun getSeriesInformations(
+        @Path("tv_id") serieID: String,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String) : SeriesInfos
+
+    @GET("person/{person_id}?append_to_response=credits")
+    suspend fun getActeursInformations(
+        @Path("person_id") acteurID: String,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String) : ActeursInfos
+
     @GET("search/movie")
     suspend fun getSearchMovies(
         @Query("api_key") apiKey: String,
