@@ -198,7 +198,6 @@ fun InfosFilms(navController: NavController, movieID: String) {
                                         FloatingActionButton(
                                             onClick = { navController.navigate("InfosActeurs/${cast.id}") },
                                             modifier = Modifier.size(120.dp).clip(CircleShape),
-                                            /*backgroundColor = Color.White*/
                                         ) {
                                             Image(
                                                 painter = rememberImagePainter(
@@ -208,7 +207,7 @@ fun InfosFilms(navController: NavController, movieID: String) {
                                                         size(350, 400)
                                                     }
                                                 ),
-                                                contentDescription = "Image film ${cast.name}",
+                                                contentDescription = "Image acteur ${cast.name}",
                                                 contentScale = ContentScale.Crop,
                                                 modifier = Modifier.fillMaxSize()
                                             )
