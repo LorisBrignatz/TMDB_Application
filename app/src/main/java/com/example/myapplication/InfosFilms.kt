@@ -66,6 +66,7 @@ fun InfosFilms(navController: NavController, movieID: String) {
     val genreBubbleShape = RoundedCornerShape(16.dp)
     val infosMovies: MainViewModel = viewModel()
     val moviesInfos by infosMovies.moviesInfos.collectAsState()
+
     Surface(
         color = Color.Black,
         modifier = Modifier.fillMaxSize()

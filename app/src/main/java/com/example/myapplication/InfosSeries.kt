@@ -47,6 +47,7 @@ fun InfosSeries(navController: NavController, serieID: String) {
     val customFont = Font(R.font.bebasneue)
     val infosSeries: MainViewModel = viewModel()
     val seriesInfos by infosSeries.seriesInfos.collectAsState()
+
     Surface(
         color = Color.Black,
         modifier = Modifier.fillMaxSize()
