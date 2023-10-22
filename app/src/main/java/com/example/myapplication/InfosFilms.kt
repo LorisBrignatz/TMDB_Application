@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
+import android.icu.number.Scale
 import android.icu.text.CaseMap.Title
 import android.media.Image
 import androidx.compose.foundation.BorderStroke
@@ -48,6 +49,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -95,11 +97,11 @@ fun InfosFilms(navController: NavController, movieID: String) {
                             data = "https://image.tmdb.org/t/p/w1280${moviesInfos.backdrop_path}",
                             builder = {
                                 crossfade(true)
-                                size(700, 700)
+                                size(700,700)
                             }
                         ),
                         contentDescription = "Image film ${moviesInfos.title}",
-                        Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }

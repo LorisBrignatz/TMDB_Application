@@ -69,6 +69,9 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.ArrowBack
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -169,89 +172,6 @@ fun TopNavBar(navController: NavController) {
         )
     }
 }
-        /*SearchBar(query = searchText,
-            onQueryChange = { searchText = it
-            },
-            onSearch = { if (currentDestination?.route == "FilmsScreen") {
-                mainViewModel.SearchMovies(it)
-            }
-                if (currentDestination?.route == "SeriesScreen") {
-                    mainViewModel.SearchSeries(it)
-                }
-                if (currentDestination?.route == "ActeursScreen") {
-                    mainViewModel.SearchActeurs(it)
-                }
-                searchActive = false
-                searchBarVisible = false
-            },
-            active = searchActive,
-            onActiveChange = {
-                searchActive = it
-            },
-            modifier = Modifier
-                .height(50.dp)
-                .fillMaxWidth(),
-            placeholder = { Text("Recherche", color = Color.Black)},
-            colors = SearchBarDefaults.SearchBarColors(
-                backgroundColor = Color.White,
-                cursorColor = Color.Black,
-                leadingIconColor = Color.Black,
-                trailingIconColor = Color.Black,
-                placeholderColor = Color.Black,
-                focusedIndicatorColor = Color.Black,
-                unfocusedIndicatorColor = Color.Black,
-                disabledIndicatorColor = Color.Black,
-                errorIndicatorColor = Color.Black,
-                errorCursorColor = Color.Black,
-                errorTrailingIconColor = Color.Black,
-                errorLeadingIconColor = Color.Black,
-                errorPlaceholderColor = Color.Black,
-                errorFocusedIndicatorColor = Color.Black,
-                errorUnfocusedIndicatorColor = Color.Black,
-                errorDisabledIndicatorColor = Color.Black,
-            ),
-        ) {
-        }
-    }
-}*/
-
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopNavBar(navController: NavController, windowClass: WindowSizeClass) {
-    val customFont = Font(R.font.bebasneue)
-
-    Column {
-        TopAppBar(
-            colors = TopAppBarDefaults.mediumTopAppBarColors(
-                containerColor = Color.Red,
-                titleContentColor = Color.Black
-            ),
-            title = {
-                Text(
-                    text = "TMDB",
-                    modifier = Modifier.fillMaxWidth().padding(8.dp),
-                    style = TextStyle(
-                        fontFamily = FontFamily(customFont),
-                        fontSize = 40.sp,
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black
-                    )
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigate("Profil") }) {
-                    Icon(Icons.Filled.Home, "Profil")
-                }
-            },
-            actions = {
-                IconButton(onClick = { /* TODO: Ajoutez l'action de recherche ici */ }) {
-                    Icon(Icons.Filled.Search, "Search")
-                }
-            }
-        )
-    }
-}*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -311,6 +231,120 @@ fun NavAction(
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LeftNavBar(
+    navController: NavController,
+    windowClass: WindowSizeClass,
+    filmsBoolean: Boolean = false,
+    seriesBoolean: Boolean = false,
+    acteursBoolean: Boolean = false
+) {
+    val iconSize = 35.dp
+    val iconTint = if (filmsBoolean || seriesBoolean || acteursBoolean) Color.White else Color.Black
+
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(56.dp)
+            .background(Color.Red),
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+                NavAction("FilmsScreen", R.drawable.video, "Films", navController, iconSize, iconTint)
+                NavAction("SeriesScreen", R.drawable.television, "Séries", navController, iconSize, iconTint)
+                NavAction("ActeursScreen", R.drawable.acteur, "Acteurs", navController, iconSize, iconTint)
+            }
+        }
+
+/*@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@Composable
+fun LeftNavBar(
+    navController: NavController,
+    filmsBoolean: Boolean = false,
+    seriesBoolean: Boolean = false,
+    acteursBoolean: Boolean = false
+) {
+    val tintMovie = if (filmsBoolean) {
+        Color.Black
+    } else {
+        Color.White
+    }
+
+    val tintSerie = if (seriesBoolean) {
+        Color.Black
+    } else {
+        Color.White
+    }
+
+    val tintPerson = if (acteursBoolean) {
+        Color.Black
+    } else {
+        Color.White
+    }
+
+    Surface(
+        modifier = Modifier
+            .fillMaxHeight()
+            .width(60.dp),
+        color = Color.Red
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            IconButton(
+                onClick = { navController.navigate("FilmsScreen") },
+                modifier = Modifier.size(35.dp)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.video),
+                        contentDescription = "Icone film",
+                        tint = tintMovie
+                    )
+                    Text(text = "Films", color = tintMovie, fontSize = 15.sp)
+                }
+            }
+            IconButton(
+                onClick = { navController.navigate("SeriesScreen") },
+                modifier = Modifier.size(35.dp)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.television),
+                        contentDescription = "Icone serie",
+                        tint = tintSerie
+                    )
+                    Text(text = "Séries", color = tintSerie, fontSize = 15.sp)
+                }
+            }
+            IconButton(
+                onClick = { navController.navigate("ActeursScreen") },
+                modifier = Modifier.size(35.dp)
+            ) {
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.acteur),
+                        contentDescription = "Icone acteur",
+                        tint = tintPerson
+                    )
+                    Text(text = "Acteurs", color = tintPerson, fontSize = 15.sp)
+                }
+            }
+        }
+    }
+}*/
 
 
 

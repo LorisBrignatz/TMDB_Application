@@ -24,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,18 +44,36 @@ import coil.compose.rememberImagePainter
 @Composable
 fun SeriesScreen(navController: NavController, windowClass: WindowSizeClass) {
     val mainViewModel: MainViewModel = viewModel()
-
-    Scaffold(
-        topBar = { TopNavBar(navController) },
-        bottomBar = { BottomNavBar(navController, windowClass, seriesBoolean = true) }
-    ) {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = Color.Black,
+    when(windowClass.widthSizeClass){
+        WindowWidthSizeClass.Compact -> {
+            Scaffold(
+                topBar = { TopNavBar(navController) },
+                bottomBar = { BottomNavBar(navController, windowClass, seriesBoolean = true) }
             ) {
-                val modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)
-                SeriesList(mainViewModel, navController, modifier = modifier)
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = Color.Black,
+                ) {
+                    val modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)
+                    SeriesList(mainViewModel, navController, modifier = modifier)
+                }
             }
+        }
+        else -> {
+            Scaffold(
+                bottomBar = {
+                    LeftNavBar(navController, windowClass, seriesBoolean = true)
+                }
+            ) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = Color.Black,
+                ) {
+                    val modifier = Modifier.padding(start = 60.dp, end = 15.dp)
+                    SeriesList(mainViewModel, navController, nbColumns = 4, modifier = modifier)
+                }
+            }
+        }
     }
 }
 @Composable

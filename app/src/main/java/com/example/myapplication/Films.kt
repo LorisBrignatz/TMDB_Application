@@ -48,17 +48,35 @@ import com.example.myapplication.ui.theme.MyApplicationTheme
 @Composable
 fun FilmsScreen(navController: NavController, windowClass: WindowSizeClass) {
     val mainViewModel: MainViewModel = viewModel()
-
-    Scaffold(
-        topBar = { TopNavBar(navController) },
-        bottomBar = { BottomNavBar(navController, windowClass, filmsBoolean = true) }
-    ){
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = Color.Black,
-        ){
-            val modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)
-            FilmsList(mainViewModel, navController, modifier = modifier)
+    when(windowClass.widthSizeClass){
+        WindowWidthSizeClass.Compact -> {
+            Scaffold(
+                topBar = { TopNavBar(navController) },
+                bottomBar = { BottomNavBar(navController, windowClass, filmsBoolean = true) }
+            ) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = Color.Black,
+                ) {
+                    val modifier = Modifier.padding(top = 60.dp, bottom = 60.dp)
+                    FilmsList(mainViewModel, navController, modifier = modifier)
+                }
+            }
+        }
+        else -> {
+            Scaffold(
+                bottomBar = {
+                    LeftNavBar(navController, windowClass, filmsBoolean = true)
+                }
+            ) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = Color.Black,
+                ) {
+                    val modifier = Modifier.padding(start = 60.dp, end = 15.dp)
+                    FilmsList(mainViewModel, navController, nbColumns = 4, modifier = modifier)
+                }
+            }
         }
     }
 }
