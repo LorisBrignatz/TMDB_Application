@@ -63,7 +63,6 @@ fun Screen(windowclass : WindowSizeClass){
             InfosActeurs(navController, acteurId)
         }
 
-
     }
 }
 /*@Composable

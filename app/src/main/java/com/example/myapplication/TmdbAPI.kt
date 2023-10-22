@@ -44,9 +44,16 @@ interface TmdbAPI {
         @Query("language") language: String,
         @Query("query") query: String) : TmdbMoviesResult
 
-    /*@GET("trending/movie")
-    suspend fun getFilmsInitiaux(
+    @GET("search/tv")
+    suspend fun getSearchSeries(
         @Query("api_key") apiKey: String,
-        @Query("language") language: String): TmdbResult*/
+        @Query("language") language: String,
+        @Query("query") query: String) : TmdbSeriesResult
+
+    @GET("search/person")
+    suspend fun getSearchActeurs(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String,
+        @Query("query") query: String) : TmdbActorsResult
 }
 

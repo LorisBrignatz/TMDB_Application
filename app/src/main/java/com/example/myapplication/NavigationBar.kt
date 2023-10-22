@@ -1,18 +1,31 @@
 package com.example.myapplication
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,15 +55,171 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.foundation.*
+import androidx.compose.material.icons.filled.ArrowBack
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun TopNavBar(navController: NavController) {
+    val mainViewModel: MainViewModel = viewModel()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val customFont = Font(R.font.bebasneue)
+    val currentDestination = navBackStackEntry?.destination
+    var searchActive by remember { mutableStateOf(false) }
+    var searchText by remember { mutableStateOf("") }
+    var searchBarVisible by remember { mutableStateOf(false) }
+    val imeAction = rememberUpdatedState(androidx.compose.ui.text.input.ImeAction.Done)
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    if (!searchBarVisible) {
+        CenterAlignedTopAppBar(
+            colors = TopAppBarDefaults.mediumTopAppBarColors(
+                containerColor = Color.Red,
+                titleContentColor = Color.Black,
+            ),
+            title = {
+                Text(
+                    text = "TMDB",
+                    modifier = Modifier.padding(start = 16.dp),
+                    fontFamily = FontFamily(customFont),
+                    maxLines = 1,
+                    fontSize = 40.sp,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black,
+                )
+
+            },
+            navigationIcon = {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Arrow back",
+                        tint = Color.Black,
+                    )
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+            actions = {
+                IconButton(onClick = { searchBarVisible = true }) {
+                    Icon(
+                        imageVector = Icons.Filled.Search,
+                        contentDescription = "Search",
+                        tint = Color.Black,
+                    )
+                }
+            },
+        )
+    }else{
+        TextField(
+            value = searchText,
+            onValueChange = { searchText = it },
+            modifier = Modifier
+                .height(50.dp)
+                .fillMaxWidth(),
+            textStyle = TextStyle(color = Color.Black),
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Done),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    // Effectuez l'action de recherche ici
+                    if (currentDestination?.route == "FilmsScreen") {
+                        mainViewModel.SearchMovies(searchText)
+                    }
+                    if (currentDestination?.route == "SeriesScreen") {
+                        mainViewModel.SearchSeries(searchText)
+                    }
+                    if (currentDestination?.route == "ActeursScreen") {
+                        mainViewModel.SearchActeurs(searchText)
+                    }
+                    searchActive = false
+                    searchBarVisible = false
+                }
+            ),
+            leadingIcon = {
+                IconButton(onClick = { searchBarVisible = false }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back",
+                        tint = Color.Black,
+                    )
+                }
+            },
+            trailingIcon = {
+                IconButton(onClick = { searchText = "" }) {
+                    Icon(
+                        imageVector = Icons.Default.Clear,
+                        contentDescription = "Clear",
+                        tint = Color.Black,
+                    )
+                }
+            },
+        )
+    }
+}
+        /*SearchBar(query = searchText,
+            onQueryChange = { searchText = it
+            },
+            onSearch = { if (currentDestination?.route == "FilmsScreen") {
+                mainViewModel.SearchMovies(it)
+            }
+                if (currentDestination?.route == "SeriesScreen") {
+                    mainViewModel.SearchSeries(it)
+                }
+                if (currentDestination?.route == "ActeursScreen") {
+                    mainViewModel.SearchActeurs(it)
+                }
+                searchActive = false
+                searchBarVisible = false
+            },
+            active = searchActive,
+            onActiveChange = {
+                searchActive = it
+            },
+            modifier = Modifier
+                .height(50.dp)
+                .fillMaxWidth(),
+            placeholder = { Text("Recherche", color = Color.Black)},
+            colors = SearchBarDefaults.SearchBarColors(
+                backgroundColor = Color.White,
+                cursorColor = Color.Black,
+                leadingIconColor = Color.Black,
+                trailingIconColor = Color.Black,
+                placeholderColor = Color.Black,
+                focusedIndicatorColor = Color.Black,
+                unfocusedIndicatorColor = Color.Black,
+                disabledIndicatorColor = Color.Black,
+                errorIndicatorColor = Color.Black,
+                errorCursorColor = Color.Black,
+                errorTrailingIconColor = Color.Black,
+                errorLeadingIconColor = Color.Black,
+                errorPlaceholderColor = Color.Black,
+                errorFocusedIndicatorColor = Color.Black,
+                errorUnfocusedIndicatorColor = Color.Black,
+                errorDisabledIndicatorColor = Color.Black,
+            ),
+        ) {
+        }
+    }
+}*/
+
+/*@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun TopNavBar(navController: NavController, windowClass: WindowSizeClass) {
     val customFont = Font(R.font.bebasneue)
+
     Column {
         TopAppBar(
             colors = TopAppBarDefaults.mediumTopAppBarColors(
@@ -82,7 +251,7 @@ fun TopNavBar(navController: NavController, windowClass: WindowSizeClass) {
             }
         )
     }
-}
+}*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

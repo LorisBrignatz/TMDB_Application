@@ -45,7 +45,7 @@ fun ActeursScreen(navController: NavController, windowClass: WindowSizeClass) {
     val mainViewModel: MainViewModel = viewModel()
 
     Scaffold(
-        topBar = { TopNavBar(navController, windowClass) },
+        topBar = { TopNavBar(navController) },
         bottomBar = { BottomNavBar(navController, windowClass, acteursBoolean = true) }
     ) {
         Surface(

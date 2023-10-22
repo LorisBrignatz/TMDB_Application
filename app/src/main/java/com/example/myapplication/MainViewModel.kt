@@ -70,9 +70,19 @@ class MainViewModel( savedStateHandle: SavedStateHandle) : ViewModel() {
             acteursInfos.value = service.getActeursInformations(acteurID?:"", apikey, language)
         }
     }
-        fun SearchMovies(language: String, query: String) {
-            viewModelScope.launch {
-                movies.value = service.getSearchMovies(apikey, language, query).results
-            }
+    fun SearchMovies(query: String) {
+        viewModelScope.launch {
+            movies.value = service.getSearchMovies(apikey, "fr", query).results
         }
     }
+    fun SearchSeries(query: String) {
+        viewModelScope.launch {
+            series.value = service.getSearchSeries(apikey, "fr", query).results
+        }
+    }
+    fun SearchActeurs(query: String) {
+        viewModelScope.launch {
+            acteurs.value = service.getSearchActeurs(apikey, "fr", query).results
+        }
+    }
+}
