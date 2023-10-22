@@ -62,6 +62,7 @@ fun ActeursScreen(navController: NavController, windowClass: WindowSizeClass) {
 
         else -> {
             Scaffold(
+                topBar = { TopFloatNavBar(navController) },
                 bottomBar = {
                     LeftNavBar(navController, windowClass, acteursBoolean = true)
                 }

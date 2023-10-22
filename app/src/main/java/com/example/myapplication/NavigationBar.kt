@@ -73,6 +73,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.ui.zIndex
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -258,93 +259,159 @@ fun LeftNavBar(
             }
         }
 
-/*@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LeftNavBar(
-    navController: NavController,
-    filmsBoolean: Boolean = false,
-    seriesBoolean: Boolean = false,
-    acteursBoolean: Boolean = false
-) {
-    val tintMovie = if (filmsBoolean) {
-        Color.Black
-    } else {
-        Color.White
-    }
+fun TopFloatNavBar(navController: NavController) {
+    val mainViewModel: MainViewModel = viewModel()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val customFont = Font(R.font.bebasneue)
+    val currentDestination = navBackStackEntry?.destination
+    var searchActive by remember { mutableStateOf(false) }
+    var searchText by remember { mutableStateOf("") }
+    var searchBarVisible by remember { mutableStateOf(false) }
+    val imeAction = rememberUpdatedState(androidx.compose.ui.text.input.ImeAction.Done)
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    val tintSerie = if (seriesBoolean) {
-        Color.Black
-    } else {
-        Color.White
-    }
-
-    val tintPerson = if (acteursBoolean) {
-        Color.Black
-    } else {
-        Color.White
-    }
-
-    Surface(
-        modifier = Modifier
-            .fillMaxHeight()
-            .width(60.dp),
-        color = Color.Red
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            IconButton(
-                onClick = { navController.navigate("FilmsScreen") },
-                modifier = Modifier.size(35.dp)
+        if (!searchBarVisible) {
+            FloatingActionButton(
+                onClick = { searchBarVisible = true },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
             ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.video),
-                        contentDescription = "Icone film",
-                        tint = tintMovie
-                    )
-                    Text(text = "Films", color = tintMovie, fontSize = 15.sp)
-                }
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "Search",
+                    tint = Color.Black,
+                )
             }
-            IconButton(
-                onClick = { navController.navigate("SeriesScreen") },
-                modifier = Modifier.size(35.dp)
+        } else {
+            TextField(
+                value = searchText,
+                onValueChange = { searchText = it },
+                modifier = Modifier
+                    .height(50.dp)
+                    .fillMaxWidth(),
+                textStyle = TextStyle(color = Color.Black),
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        // Effectuez l'action de recherche ici
+                        if (currentDestination?.route == "FilmsScreen") {
+                            mainViewModel.SearchMovies(searchText)
+                        }
+                        if (currentDestination?.route == "SeriesScreen") {
+                            mainViewModel.SearchSeries(searchText)
+                        }
+                        if (currentDestination?.route == "ActeursScreen") {
+                            mainViewModel.SearchActeurs(searchText)
+                    }
+                        searchActive = false
+                        searchBarVisible = false
+                    }
+                ),
+                leadingIcon = {
+                    IconButton(onClick = { searchBarVisible = false }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.Black,
+                        )
+                    }
+                },
+                trailingIcon = {
+                    IconButton(onClick = { searchText = "" }) {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = "Clear",
+                            tint = Color.Black,
+                        )
+                    }
+                },
+            )
+        }
+    }
+}
+
+/*@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopFloatNavBar(navController: NavController) {
+    val mainViewModel: MainViewModel = viewModel()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val customFont = Font(R.font.bebasneue)
+    val currentDestination = navBackStackEntry?.destination
+    var searchActive by remember { mutableStateOf(false) }
+    var searchText by remember { mutableStateOf("") }
+    var searchBarVisible by remember { mutableStateOf(false) }
+    val imeAction = rememberUpdatedState(androidx.compose.ui.text.input.ImeAction.Done)
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    Box {
+        if (!searchBarVisible) {
+            FloatingActionButton(
+                onClick = { searchBarVisible = true },
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(16.dp)
             ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.television),
-                        contentDescription = "Icone serie",
-                        tint = tintSerie
-                    )
-                    Text(text = "Séries", color = tintSerie, fontSize = 15.sp)
-                }
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "Search",
+                    tint = Color.Black,
+                )
             }
-            IconButton(
-                onClick = { navController.navigate("ActeursScreen") },
-                modifier = Modifier.size(35.dp)
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.acteur),
-                        contentDescription = "Icone acteur",
-                        tint = tintPerson
-                    )
-                    Text(text = "Acteurs", color = tintPerson, fontSize = 15.sp)
-                }
-            }
+        } else {
+            TextField(
+                value = searchText,
+                onValueChange = { searchText = it },
+                modifier = Modifier
+                    .height(50.dp)
+                    .fillMaxWidth(),
+                textStyle = TextStyle(color = Color.Black),
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        // Effectuez l'action de recherche ici
+                        if (currentDestination?.route == "FilmsScreen") {
+                            mainViewModel.SearchMovies(searchText)
+                        }
+                        if (currentDestination?.route == "SeriesScreen") {
+                            mainViewModel.SearchSeries(searchText)
+                        }
+                        if (currentDestination?.route == "ActeursScreen") {
+                            mainViewModel.SearchActeurs(searchText)
+                        }
+                        searchActive = false
+                        searchBarVisible = false
+                    }
+                ),
+                leadingIcon = {
+                    IconButton(onClick = { searchBarVisible = false }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.Black,
+                        )
+                    }
+                },
+                trailingIcon = {
+                    IconButton(onClick = { searchText = "" }) {
+                        Icon(
+                            imageVector = Icons.Default.Clear,
+                            contentDescription = "Clear",
+                            tint = Color.Black,
+                        )
+                    }
+                },
+            )
         }
     }
 }*/
+
+
 
 
 
