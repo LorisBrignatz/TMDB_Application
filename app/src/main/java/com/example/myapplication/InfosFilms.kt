@@ -101,6 +101,7 @@ fun InfosFilms(navController: NavController, movieID: String) {
                             }
                         ),
                         contentDescription = "Image film ${moviesInfos.title}",
+                        contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

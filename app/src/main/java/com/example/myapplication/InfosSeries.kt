@@ -74,7 +74,8 @@ fun InfosSeries(navController: NavController, serieID: String) {
                             }
                         ),
                         contentDescription = "Image serie ${seriesInfos.name}",
-                        Modifier.fillMaxWidth()
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxWidth()
                     )
                 }
             }

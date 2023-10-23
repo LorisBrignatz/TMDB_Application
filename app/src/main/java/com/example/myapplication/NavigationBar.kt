@@ -130,15 +130,23 @@ fun TopNavBar(navController: NavController) {
     }else{
         TextField(
             value = searchText,
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = Color.Red,
+                focusedIndicatorColor = Color.Black,
+                unfocusedIndicatorColor = Color.Black,
+                cursorColor = Color.Black,
+            ),
             onValueChange = { searchText = it },
             modifier = Modifier
-                .height(50.dp)
-                .fillMaxWidth(),
-            textStyle = TextStyle(color = Color.Black),
+                .height(80.dp)
+                .padding(16.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(50.dp)),
+            textStyle = TextStyle(
+                color = Color.Black),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Done),
             keyboardActions = KeyboardActions(
                 onDone = {
-                    // Effectuez l'action de recherche ici
                     if (currentDestination?.route == "FilmsScreen") {
                         mainViewModel.SearchMovies(searchText)
                     }
@@ -293,15 +301,22 @@ fun TopFloatNavBar(navController: NavController) {
         } else {
             TextField(
                 value = searchText,
+                colors = TextFieldDefaults.textFieldColors(
+                    containerColor = Color.Red,
+                    focusedIndicatorColor = Color.Black,
+                    unfocusedIndicatorColor = Color.Black,
+                    cursorColor = Color.Black,
+                ),
                 onValueChange = { searchText = it },
                 modifier = Modifier
                     .height(50.dp)
-                    .fillMaxWidth(),
+                    .padding(start = 60.dp, end = 10.dp)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(50.dp)),
                 textStyle = TextStyle(color = Color.Black),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        // Effectuez l'action de recherche ici
                         if (currentDestination?.route == "FilmsScreen") {
                             mainViewModel.SearchMovies(searchText)
                         }
@@ -337,81 +352,6 @@ fun TopFloatNavBar(navController: NavController) {
         }
     }
 }
-
-/*@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopFloatNavBar(navController: NavController) {
-    val mainViewModel: MainViewModel = viewModel()
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val customFont = Font(R.font.bebasneue)
-    val currentDestination = navBackStackEntry?.destination
-    var searchActive by remember { mutableStateOf(false) }
-    var searchText by remember { mutableStateOf("") }
-    var searchBarVisible by remember { mutableStateOf(false) }
-    val imeAction = rememberUpdatedState(androidx.compose.ui.text.input.ImeAction.Done)
-    val keyboardController = LocalSoftwareKeyboardController.current
-
-    Box {
-        if (!searchBarVisible) {
-            FloatingActionButton(
-                onClick = { searchBarVisible = true },
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(16.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = "Search",
-                    tint = Color.Black,
-                )
-            }
-        } else {
-            TextField(
-                value = searchText,
-                onValueChange = { searchText = it },
-                modifier = Modifier
-                    .height(50.dp)
-                    .fillMaxWidth(),
-                textStyle = TextStyle(color = Color.Black),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = androidx.compose.ui.text.input.ImeAction.Done),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        // Effectuez l'action de recherche ici
-                        if (currentDestination?.route == "FilmsScreen") {
-                            mainViewModel.SearchMovies(searchText)
-                        }
-                        if (currentDestination?.route == "SeriesScreen") {
-                            mainViewModel.SearchSeries(searchText)
-                        }
-                        if (currentDestination?.route == "ActeursScreen") {
-                            mainViewModel.SearchActeurs(searchText)
-                        }
-                        searchActive = false
-                        searchBarVisible = false
-                    }
-                ),
-                leadingIcon = {
-                    IconButton(onClick = { searchBarVisible = false }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Back",
-                            tint = Color.Black,
-                        )
-                    }
-                },
-                trailingIcon = {
-                    IconButton(onClick = { searchText = "" }) {
-                        Icon(
-                            imageVector = Icons.Default.Clear,
-                            contentDescription = "Clear",
-                            tint = Color.Black,
-                        )
-                    }
-                },
-            )
-        }
-    }
-}*/
 
 
 
