@@ -61,6 +61,7 @@ fun SeriesScreen(navController: NavController, windowClass: WindowSizeClass) {
         }
         else -> {
             Scaffold(
+                topBar = { TopFloatNavBar(navController) },
                 bottomBar = {
                     LeftNavBar(navController, windowClass, seriesBoolean = true)
                 }

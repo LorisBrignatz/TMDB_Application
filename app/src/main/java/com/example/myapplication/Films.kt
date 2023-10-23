@@ -65,6 +65,7 @@ fun FilmsScreen(navController: NavController, windowClass: WindowSizeClass) {
         }
         else -> {
             Scaffold(
+                topBar = { TopFloatNavBar(navController) },
                 bottomBar = {
                     LeftNavBar(navController, windowClass, filmsBoolean = true)
                 }

@@ -278,9 +278,11 @@ fun TopFloatNavBar(navController: NavController) {
         if (!searchBarVisible) {
             FloatingActionButton(
                 onClick = { searchBarVisible = true },
+                containerColor = Color.Red,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp)
+                    .clip(CircleShape)
             ) {
                 Icon(
                     imageVector = Icons.Filled.Search,
